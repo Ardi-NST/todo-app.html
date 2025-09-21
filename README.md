@@ -801,6 +801,148 @@ sortBtns.forEach(btn => {
     }
   ]
 }
+ // === 1. Sinkronisasi dan Backup Cloud (Firebase/Supabase/JSON) ===
+let db, auth, storage; // Placeholder untuk instance Firebase/Supabase
+let todos = [];
+let labels = [];
+let undoStack = [], redoStack = [];
+let currentUser = null, sharedWith = [];
+function syncToCloud() {
+  alert('Fitur Sync ke Cloud: implementasikan Firebase/Supabase SDK di sini.');
+}
+function importJSON() {
+  alert('Import JSON: implementasi input file dan parsing JSON.');
+}
+function exportJSON() {
+  alert('Export JSON: implementasi blob JSON dan trigger download.');
+}
+// === 2. Sistem Multi-user & Autentikasi ===
+function showLogin() { document.getElementById('loginForm').style.display = 'block'; }
+function showRegister() { document.getElementById('registerForm').style.display = 'block'; }
+function login() { alert('Login: implementasikan dengan Firebase Auth atau backend Anda.'); }
+function googleLogin() { alert('Login Google: implementasikan OAuth Google/Firebase.'); }
+function register() { alert('Register: implementasikan register user.'); }
+function logout() { alert('Logout: implementasikan fungsi logout.'); }
+// === 3. Notifikasi Pengingat Otomatis ===
+function requestNotifPermission() {
+  if ('Notification' in window) Notification.requestPermission();
+}
+function showReminderNotification(todo) {
+  if (Notification.permission === "granted") {
+    new Notification("Pengingat tugas:", { body: todo.text });
+  }
+}
+// === 4. Subtask/Checklist ===
+function renderSubtasks(subtasks, todoIdx) {
+  return subtasks.map((sub, i) =>
+    `<li>
+      <input type="checkbox" ${sub.done ? "checked" : ""} onchange="toggleSubtask(${todoIdx},${i})">
+      ${sub.text}
+      <button onclick="removeSubtask(${todoIdx},${i})">Hapus</button>
+    </li>`
+  ).join('');
+}
+function addSubtask(todoIdx) {
+  let subtaskText = prompt("Subtask:");
+  if (subtaskText) {
+    todos[todoIdx].subtasks.push({ text: subtaskText, done: false });
+    saveState(); renderTodos();
+  }
+}
+function toggleSubtask(todoIdx, subIdx) {
+  todos[todoIdx].subtasks[subIdx].done = !todos[todoIdx].subtasks[subIdx].done;
+  saveState(); renderTodos();
+}
+function removeSubtask(todoIdx, subIdx) {
+  todos[todoIdx].subtasks.splice(subIdx, 1);
+  saveState(); renderTodos();
+}
+// === 5. Attachment/Upload File ===
+function handleAttachment(files, todoIdx) {
+  alert('Upload file: implementasi upload ke cloud storage.');
+}
+// === 6. Label/Kategori Kustom ===
+function addLabel() {
+  let label = document.getElementById('newLabel').value.trim();
+  if (label && !labels.includes(label)) {
+    labels.push(label); renderLabels();
+  }
+}
+function renderLabels() {
+  document.getElementById('labelList').innerHTML = labels.map(l => `<span>${l}</span>`).join(' ');
+  let labelSelect = document.getElementById('labelSelect');
+  labelSelect.innerHTML = labels.map(l => `<option value="${l}">${l}</option>`).join('');
+}
+// === 7. Integrasi & Tampilan Kalender ===
+function showCalendar() {
+  alert('Tampilan kalender: Gunakan library seperti FullCalendar atau buat tampilan custom.');
+}
+// === 8. Kolaborasi & Berbagi ===
+function shareTodoList() {
+  let email = document.getElementById('shareEmail').value;
+  if (email) { alert('Fitur berbagi: Implementasikan undangan berbagi via email/user.'); }
+}
+// === 9. Undo/Redo ===
+function saveState() {
+  undoStack.push(JSON.stringify({ todos, labels }));
+  redoStack = [];
+}
+function undo() {
+  if (undoStack.length > 1) {
+    redoStack.push(undoStack.pop());
+    let prev = JSON.parse(undoStack[undoStack.length - 1]);
+    todos = prev.todos; labels = prev.labels; renderTodos(); renderLabels();
+  }
+}
+function redo() {
+  if (redoStack.length > 0) {
+    let next = JSON.parse(redoStack.pop());
+    todos = next.todos; labels = next.labels; renderTodos(); renderLabels();
+    undoStack.push(JSON.stringify({ todos, labels }));
+  }
+}
+// === 10. PWA & Tampilan Mobile Optimal ===
+// === Todo CRUD & Render ===
+function addTodo(event) {
+  event.preventDefault();
+  let input = document.getElementById('todoInput').value.trim();
+  let label = document.getElementById('labelSelect').value;
+  let reminder = document.getElementById('reminderInput').value;
+  let attachment = document.getElementById('attachmentInput').files;
+  if (input) {
+    let todo = {
+      text: input, label: label, done: false,
+      reminder: reminder, attachments: [], subtasks: []
+    };
+    todos.push(todo); saveState(); renderTodos();
+    if (reminder) scheduleReminder(todo);
+    if (attachment.length) handleAttachment(attachment, todos.length - 1);
+    document.getElementById('todoForm').reset();
+  }
+}
+function renderTodos() {
+  document.getElementById('todoList').innerHTML = todos.map((todo, idx) =>
+    `<div class="todo ${todo.done ? 'done' : ''}">
+      <input type="checkbox" ${todo.done ? 'checked' : ''} onchange="toggleTodo(${idx})">
+      <strong>${todo.text}</strong> [${todo.label || '-'}]
+      <button onclick="addSubtask(${idx})">+Subtask</button>
+      <ul>${renderSubtasks(todo.subtasks || [], idx)}</ul>
+      <span>Reminder: ${todo.reminder || '-'}</span>
+      <span>Attachment: ${todo.attachments?.length || 0}</span>
+      <button onclick="deleteTodo(${idx})">Hapus</button>
+    </div>`
+  ).join('');
+}
+function toggleTodo(idx) { todos[idx].done = !todos[idx].done; saveState(); renderTodos(); }
+function deleteTodo(idx) { todos.splice(idx, 1); saveState(); renderTodos(); }
+function scheduleReminder(todo) {
+  setTimeout(() => showReminderNotification(todo), 5000);
+}
+window.onload = function() {
+  renderLabels();
+  renderTodos();
+  saveState();
+};      
  // Render awal & auto focus
             renderTasks();
         taskInput.focus();
