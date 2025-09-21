@@ -390,37 +390,6 @@
             const toggleDarkBtn = document.getElementById('toggle-dark-btn');
             const progressBar = document.getElementById('progress-bar');
             const toast = document.getElementById('toast');
-     body}
-  font-family: sans-serif;
-  background: #f5f5f5;
-  margin: 0;
-  padding: 0;
-}
-#todo-section, #sync-section, #auth-section, #label-section, #share-section, #undo-redo-section, #notif-section, #calendar-section {
-  background: #fff;
-  margin: 16px auto;
-  padding: 16px;
-  max-width: 500px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.todo {
-  margin: 8px 0;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 8px;
-}
-.todo.done {
-  text-decoration: line-through;
-  color: #888;
-}
-@media (max-width:600px) {
-  body { padding: 0; }
-  #todo-section, #sync-section, #auth-section, #label-section, #share-section, #undo-redo-section, #notif-section, #calendar-section {
-    max-width: 100%;
-    margin: 8px 0;
-    border-radius: 0;
-  }
-}
             // State
             let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
             let currentFilter = 'all';
@@ -429,7 +398,6 @@
             let currentSort = 'created';
             let dragSrcIndex = null;
             let unsavedEdit = false;
-
             // Dark mode
             function setDarkMode(on) {
                 document.body.classList.toggle('dark', on);
@@ -438,15 +406,13 @@
             }
             setDarkMode(localStorage.getItem('darkMode') === '1');
             toggleDarkBtn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark')));
-
-            // Toast
+           // Toast
             function showToast(msg) {
                 toast.textContent = msg;
                 toast.classList.add('show');
                 setTimeout(() => toast.classList.remove('show'), 2000);
             }
-
-            // Stats & Progress
+         // Stats & Progress
             function updateStats() {
                 const total = tasks.length;
                 const active = tasks.filter(t => !t.completed).length;
@@ -454,8 +420,7 @@
                 stats.textContent = `Total: ${total} | Aktif: ${active} | Selesai: ${done}`;
                 progressBar.style.width = total === 0 ? "0%" : (done / total * 100) + "%";
             }
-
-            // Render
+             // Render
             function renderTasks() {
                 taskList.innerHTML = '';
                 let filteredTasks = tasks
@@ -465,8 +430,7 @@
                         return true;
                     })
                     .filter(task => task.text.toLowerCase().includes(searchTerm.toLowerCase()));
-
-                // Sorting
+        // Sorting
                 if(currentSort === 'priority') {
                     const prioOrder = {tinggi: 1, sedang: 2, rendah: 3};
                     filteredTasks = filteredTasks.sort((a, b) => prioOrder[a.priority] - prioOrder[b.priority]);
@@ -481,8 +445,7 @@
                 } else {
                     filteredTasks = filteredTasks.sort((a, b) => a.id - b.id); // default: created time
                 }
-
-                if (filteredTasks.length === 0) {
+           if (filteredTasks.length === 0) {
                     taskList.innerHTML = '<li class="empty-state">Tidak ada tugas.</li>';
                     updateStats();
                     return;
@@ -502,11 +465,11 @@
                         }
                         deadlineLabel = `<span class="${classDeadline}">${task.deadline < nowDate && !task.completed ? 'Lewat: ' : ''}${task.deadline}</span>`;
                     }
-
-                    li.className = `task-item ${task.completed ? 'completed' : ''} ${warnDeadline}`;
+         {
+              li.className = `task-item ${task.completed ? 'completed' : ''} ${warnDeadline}`;
                     li.dataset.id = task.id;
                     li.setAttribute('draggable', editingTaskId === null); // disable drag saat edit
-
+           {
                     if (editingTaskId === task.id) {
                         li.innerHTML = `
                             <input type="checkbox" ${task.completed ? 'checked' : ''} disabled>
@@ -586,15 +549,15 @@
                 });
                 updateStats();
             }
-
-            function capitalize(str) {
+          }
+         function capitalize(str) {
                 if (str === "rendah") return "Rendah";
                 if (str === "sedang") return "Sedang";
                 if (str === "tinggi") return "Tinggi";
                 return str.charAt(0).toUpperCase() + str.slice(1);
             }
-
-            // Tambah task baru
+          {
+      // Tambah task baru
             function addTask() {
                 const text = taskInput.value.trim();
                 const priority = priorityInput.value;
@@ -616,7 +579,7 @@
                 deadlineInput.value = '';
                 taskInput.focus();
             }
-
+       {
             // Toggle status task
             function toggleTask(id) {
                 tasks = tasks.map(task => {
@@ -628,7 +591,7 @@
                 saveTasks();
                 renderTasks();
             }
-
+            {
             // Hapus task dengan konfirmasi
             function deleteTask(id) {
                 if (!confirm('Yakin ingin menghapus tugas ini?')) return;
@@ -637,8 +600,7 @@
                 renderTasks();
                 showToast("Tugas dihapus.");
             }
-
-            // Edit task
+              // Edit task
             function startEditTask(id) {
                 if (editingTaskId && unsavedEdit) {
                     if (!confirm("Perubahan belum disimpan. Lanjut edit tugas lain?")) return;
@@ -667,8 +629,7 @@
                 unsavedEdit = false;
                 renderTasks();
             }
-
-            // Hapus semua task
+   // Hapus semua task
             function deleteAllTasks() {
                 if (tasks.length === 0) return;
                 if (confirm('Yakin ingin menghapus SEMUA tugas?')) {
@@ -678,8 +639,7 @@
                     showToast("Semua tugas dihapus.");
                 }
             }
-
-            // Hapus semua selesai
+         // Hapus semua selesai
             function deleteDoneTasks() {
                 if (tasks.filter(t=>t.completed).length === 0) return;
                 if(confirm('Yakin ingin menghapus semua tugas yang sudah selesai?')) {
@@ -689,8 +649,7 @@
                     showToast("Tugas selesai dihapus.");
                 }
             }
-
-            // Tandai semua selesai
+// Tandai semua selesai
             function completeAllTasks() {
                 if(tasks.filter(t=>!t.completed).length === 0) return;
                 if(confirm('Tandai semua tugas sebagai selesai?')) {
@@ -700,20 +659,17 @@
                     showToast("Semua tugas selesai!");
                 }
             }
-
-            // Simpan tasks ke localStorage
+  // Simpan tasks ke localStorage
             function saveTasks() {
                 localStorage.setItem('tasks', JSON.stringify(tasks));
             }
-
-            // Keyboard shortcut & autofokus
+  // Keyboard shortcut & autofokus
             document.addEventListener('keydown', function(e) {
                 if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && document.activeElement === taskInput) {
                     addTask();
                 }
             });
-
-            // Event listeners
+              // Event listeners
             addBtn.addEventListener('click', addTask);
             taskInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') addTask();
@@ -724,17 +680,14 @@
             deadlineInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') addTask();
             });
-
             deleteAllBtn.addEventListener('click', deleteAllTasks);
             deleteDoneBtn.addEventListener('click', deleteDoneTasks);
             completeAllBtn.addEventListener('click', completeAllTasks);
-
-            taskList.addEventListener('click', function(e) {
+         taskList.addEventListener('click', function(e) {
                 const taskItem = e.target.closest('.task-item');
                 if (!taskItem) return;
                 const taskId = parseInt(taskItem.dataset.id);
-
-                if (e.target.type === 'checkbox' && !e.target.disabled) {
+if (e.target.type === 'checkbox' && !e.target.disabled) {
                     toggleTask(taskId);
                 }
                 if (e.target.classList.contains('delete-btn')) {
@@ -770,8 +723,7 @@
                     }
                 }
             });
-
-            filterBtns.forEach(btn => {
+filterBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
@@ -779,8 +731,7 @@
                     renderTasks();
                 });
             });
-
-            sortBtns.forEach(btn => {
+sortBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     sortBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
@@ -788,23 +739,51 @@
                     renderTasks();
                 });
             });
-
             searchInput.addEventListener('input', function() {
                 searchTerm = this.value;
                 renderTasks();
             });
-
-            // Peringatan keluar jika edit belum disimpan
+// Peringatan keluar jika edit belum disimpan
             window.addEventListener('beforeunload', function(e){
                 if (editingTaskId && unsavedEdit) {
                     e.preventDefault();
                     e.returnValue = '';
                 }
             });
-
-            // Render awal & auto focus
+          {
+         t-family: sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+#todo-section, #sync-section, #auth-section, #label-section, #share-section, #undo-redo-section, #notif-section, #calendar-section {
+  background: #fff;
+  margin: 16px auto;
+  padding: 16px;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.todo {
+  margin: 8px 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+.todo.done {
+  text-decoration: line-through;
+  color: #888;
+}
+@media (max-width:600px) {
+  body { padding: 0; }
+  #todo-section, #sync-section, #auth-section, #label-section, #share-section, #undo-redo-section, #notif-section, #calendar-section {
+    max-width: 100%;
+    margin: 8px 0;
+    border-radius: 0;
+  }
+} 
+ // Render awal & auto focus
             renderTasks();
-            taskInput.focus();
+        taskInput.focus();
         });
     </script>
 </body>
