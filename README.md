@@ -102,8 +102,7 @@
             background: var(--bg);
             color: var(--text);
             min-width: 120px;
-        }
-        #priority-input, #deadline-input {
+        }    #priority-input,    #deadline input {
             padding: 10px 8px;
             border: 1px solid #ddd;
             background: var(--bg);
@@ -391,7 +390,37 @@
             const toggleDarkBtn = document.getElementById('toggle-dark-btn');
             const progressBar = document.getElementById('progress-bar');
             const toast = document.getElementById('toast');
-
+     body}
+  font-family: sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+#todo-section, #sync-section, #auth-section, #label-section, #share-section, #undo-redo-section, #notif-section, #calendar-section {
+  background: #fff;
+  margin: 16px auto;
+  padding: 16px;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.todo {
+  margin: 8px 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+.todo.done {
+  text-decoration: line-through;
+  color: #888;
+}
+@media (max-width:600px) {
+  body { padding: 0; }
+  #todo-section, #sync-section, #auth-section, #label-section, #share-section, #undo-redo-section, #notif-section, #calendar-section {
+    max-width: 100%;
+    margin: 8px 0;
+    border-radius: 0;
+  }
+}
             // State
             let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
             let currentFilter = 'all';
