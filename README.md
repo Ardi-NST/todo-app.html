@@ -750,8 +750,8 @@ sortBtns.forEach(btn => {
                     e.returnValue = '';
                 }
             });
-          {
-         t-family: sans-serif;
+    body {
+ font-family: sans-serif;
   background: #f5f5f5;
   margin: 0;
   padding: 0;
@@ -780,7 +780,27 @@ sortBtns.forEach(btn => {
     margin: 8px 0;
     border-radius: 0;
   }
-} 
+  } 
+  {
+  "name": "Todo App Advanced",
+  "short_name": "TodoApp",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1976d2",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
  // Render awal & auto focus
             renderTasks();
         taskInput.focus();
