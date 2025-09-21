@@ -15,7 +15,7 @@
             --dangerHover: #c0392b;
             --success: #229954;
             --toast: #222d3d;
-        }
+          }
         body.dark {
             --bg: #181c20;
             --bgCard: #23272e;
@@ -719,7 +719,7 @@ if (e.target.type === 'checkbox' && !e.target.disabled) {
                         const newDeadline = taskItem.querySelector('.edit-deadline-input').value;
                         if (newText !== '') {
                             saveEditTask(taskId, newText, newPriority, newDeadline);
-                        }
+                       }
                     }
                 }
             });
@@ -750,7 +750,7 @@ sortBtns.forEach(btn => {
                     e.returnValue = '';
                 }
             });
-    body {
+ body {
  font-family: sans-serif;
   background: #f5f5f5;
   margin: 0;
@@ -947,6 +947,80 @@ window.onload = function() {
             renderTasks();
         taskInput.focus();
         });
+       <!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Todo App Advance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Untuk fitur PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 2. Multi-user & Autentikasi -->
+  <div id="auth-section">
+    <button onclick="showLogin()">Login</button>
+    <button onclick="showRegister()">Register</button>
+    <button onclick="logout()" style="display:none" id="logoutBtn">Logout</button>
+    <span id="currentUser"></span>
+  </div>
+  <div id="loginForm" style="display:none">
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="googleLogin()">Login with Google</button>
+  </div>
+  <div id="registerForm" style="display:none">
+    <input type="email" id="regEmail" placeholder="Email">
+    <input type="password" id="regPass" placeholder="Password">
+    <button onclick="register()">Register</button>
+  </div>
+  <!-- 6. Label/Kategori Kustom -->
+  <div id="label-section">
+    <input id="newLabel" placeholder="Buat label baru...">
+    <button onclick="addLabel()">Tambah Label</button>
+    <div id="labelList"></div>
+  </div>
+   <!-- 1. Sinkronisasi dan Backup Cloud & Import/Export JSON -->
+  <div id="sync-section">
+    <button onclick="syncToCloud()">Sync ke Cloud</button>
+    <button onclick="importJSON()">Import JSON</button>
+    <button onclick="exportJSON()">Export JSON</button>
+  </div>
+   <!-- 7. Kalender -->
+  <div id="calendar-section">
+    <button onclick="showCalendar()">Tampilkan Kalender</button>
+    <div id="calendarContainer"></div>
+  </div>
+ <!-- 3. Notifikasi Pengingat -->
+  <div id="notif-section">
+    <button onclick="requestNotifPermission()">Aktifkan Notifikasi</button>
+  </div>
+  <!-- 8. Kolaborasi & Berbagi -->
+  <div id="share-section">
+    <input id="shareEmail" placeholder="Email teman...">
+    <button onclick="shareTodoList()">Bagikan List</button>
+  </div>
+<!-- 9. Undo/Redo -->
+  <div id="undo-redo-section">
+    <button onclick="undo()">Undo</button>
+    <button onclick="redo()">Redo</button>
+  </div>
+<!-- 4. Subtask/Checklist, 5. Attachment/Upload File, 10. Tampilan Responsif -->
+  <section id="todo-section">
+    <form id="todoForm" onsubmit="addTodo(event)">
+      <input id="todoInput" placeholder="Tambah tugas...">
+      <select id="labelSelect"></select>
+      <input type="datetime-local" id="reminderInput">
+      <input type="file" id="attachmentInput" multiple>
+      <button type="submit">Tambah</button>
+    </form>
+    <div id="todoList"></div>
+  </section>
+   <script src="app.js"></script>
+</body>
+</html> 
     </script>
 </body>
 </html>
